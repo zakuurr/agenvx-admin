@@ -70,7 +70,6 @@ const CompanyList = () => {
       })
       .catch(err => {
         setError(true)
-        console.log(err)
       })
       .finally(_ => {
         setLoading(false)
@@ -83,30 +82,24 @@ const CompanyList = () => {
   const rows = dataCompanies.result.map(dataAPI => ({
     ...dataAPI,
     stream: capsEveryWord(dataAPI.stream),
-    action: (
-      <MDBBtnGroup>
-        <MDBBtnGroup>
-          <MDBDropdown>
-            <MDBDropdownToggle
-              caret
-              color="primary"
-              className="h-100 mdi mdi-menu-down d-flex flex-row-reverse btn-sm"
-            >
-              Option
-            </MDBDropdownToggle>
-            <MDBDropdownMenu basic color="primary">
-              <Link to={`/companies/detail/${dataAPI.companyID}`}>
-                <MDBDropdownItem>Detail</MDBDropdownItem>
-              </Link>
-              <Link to={`/companies/edit/${dataAPI.companyID}`}>
-                <MDBDropdownItem>Update</MDBDropdownItem>
-              </Link>
-              {/* <MDBDropdownItem className="text-danger">Detele</MDBDropdownItem> */}
-            </MDBDropdownMenu>
-          </MDBDropdown>
-        </MDBBtnGroup>
-      </MDBBtnGroup>
-    ),
+    action:(
+      <MDBDropdown>
+      <MDBDropdownToggle tag='a' className='btn btn-primary'>
+        Option
+      </MDBDropdownToggle>
+      <MDBDropdownMenu>
+        <Link to={`/companies/detail/${dataAPI.companyID}`}>
+          <MDBDropdownItem link>Detail</MDBDropdownItem>
+        </Link>
+        <Link to={`/companies/edit/${dataAPI.companyID}`}>
+          <MDBDropdownItem link>Edit</MDBDropdownItem>
+        </Link>
+        {/* <Link to={`/companies/edit/${dataAPI.companyID}`}>
+          <MDBDropdownItem link>Delete</MDBDropdownItem>
+        </Link> */}
+      </MDBDropdownMenu>
+    </MDBDropdown>
+    )
   }))
 
   return (

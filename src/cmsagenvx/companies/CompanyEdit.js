@@ -12,6 +12,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  Button
 } from 'reactstrap'
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -47,6 +48,7 @@ const CompanyEdit = ({ match, ...rest }) => {
   useEffect(() => {
     fetchData(`/company/${match.params.companyID}`)
       .then(res => {
+        console.log(res)
         setDataCompany(res)
         setError(false)
       })
@@ -146,9 +148,9 @@ const CompanyEdit = ({ match, ...rest }) => {
                       <i className="mdi mdi-keyboard-backspace"></i> Back to list
                     </Link>
                     <Link to={`/${rootMenuPath}/detail/${dataCompany.result.companyID}`}>
-                      <MDBBtn type="button" color="danger">
+                      <Button type="button" color="danger">
                         View detail & Discard changes
-                      </MDBBtn>
+                      </Button>
                     </Link>
                   </div>
 
@@ -214,14 +216,14 @@ const CompanyEdit = ({ match, ...rest }) => {
 
                               {/* TODO: add conditional */}
                               <div>
-                                <MDBBtn
+                                <Button
                                   type="button"
                                   className="btn-outline-danger"
                                   size="sm"
                                   onClick={e => handleOnClickDelete(e, 'images')}
                                 >
                                   Delete all photos
-                                </MDBBtn>
+                                </Button>
                               </div>
                             </div>
 
@@ -253,14 +255,14 @@ const CompanyEdit = ({ match, ...rest }) => {
 
                               {/* TODO: add conditional */}
                               <div>
-                                <MDBBtn
+                                <Button
                                   type="button"
                                   className="btn-outline-danger"
                                   size="sm"
                                   onClick={e => handleOnClickDelete(e, 'video')}
                                 >
                                   Delete all video
-                                </MDBBtn>
+                                </Button>
                               </div>
                             </div>
 

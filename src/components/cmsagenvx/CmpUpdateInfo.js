@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { MDBBtn } from 'mdbreact'
-import { Row, CardBody, CardTitle, CardSubtitle, Form } from 'reactstrap'
+import { Row, CardBody, CardTitle, CardSubtitle, Form, Button } from 'reactstrap'
 
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertFromHTML, ContentState } from 'draft-js'
@@ -272,18 +272,18 @@ const CmpUpdateInfo = ({ masterData }) => {
 
       {/* save and discard btn */}
       <div className="d-flex flex-column gap-2 mb-4 mt-4">
-        <MDBBtn
+        <Button
           type="submit"
           className="col-9 col-md-4 mx-auto btn-success"
           disabled={isSubmitting ? true : false}
         >
           {CW.button.submit.saveUpdateForm}
-        </MDBBtn>
+        </Button>
 
         <Link to="/companies/list" className="col-9 col-md-4 mx-auto">
-          <MDBBtn type="button" className="col-12 btn-outline-light text-dark">
+          <Button type="button" className="col-12 btn-outline-light text-dark">
             {CW.button.submit.discardForm}
-          </MDBBtn>
+          </Button>
         </Link>
       </div>
     </Form>

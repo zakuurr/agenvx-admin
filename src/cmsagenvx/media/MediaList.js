@@ -1,4 +1,4 @@
-import { MDBDataTable, MDBBtn } from 'mdbreact'
+import { MDBDataTable, MDBBtn, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, } from 'mdbreact'
 
 import { Row, Col, Card, CardBody, CardTitle, Container, CardSubtitle } from 'reactstrap'
 
@@ -41,12 +41,6 @@ const columns = [
     width: 100,
   },
   {
-    label: 'Source',
-    field: 'source',
-    sort: 'asc',
-    width: 100,
-  },
-  {
     label: 'Action',
     field: 'action',
     sort: 'asc',
@@ -79,13 +73,23 @@ const MediaList = () => {
 
   const rows = dataMedia.result.map((m, i) => ({
     ...m,
-    url: (
-      <a href={m.source} target="_blank">
-        {m.source}
-      </a>
-    ),
-    source: <SourceBtn href={m.source} />,
-    action: <UpdateBtn href={`/media/edit/${m.assetID}`} />,
+    url: m.source,
+    action:(
+      <MDBDropdown>
+      <MDBDropdownToggle tag='a' className='btn btn-primary'>
+        Option
+      </MDBDropdownToggle>
+      <MDBDropdownMenu>
+        <a href={m.source}>
+          <MDBDropdownItem link>Open</MDBDropdownItem>
+        </a>
+        <Link to={`/media/edit/${m.assetID}`}>
+          <MDBDropdownItem link>Update</MDBDropdownItem>
+        </Link>
+      </MDBDropdownMenu>
+    </MDBDropdown>
+    )
+    // action: <UpdateBtn href={`/media/edit/${m.assetID}`} />,
   }))
 
 

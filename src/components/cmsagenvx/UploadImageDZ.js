@@ -7,7 +7,7 @@ import ReactS3Client from 'helpers/ReactS3Client'
 import { MDBBtn } from 'mdbreact'
 import { useState } from 'react'
 import Dropzone from 'react-dropzone'
-import { CardSubtitle, Col, Form, Row } from 'reactstrap'
+import { CardSubtitle, Col, Form, Row, Button } from 'reactstrap'
 import SimpleToast from './alert/SimpleToast'
 
 const UploadImageDZ = ({ masterData, params }) => {
@@ -127,13 +127,13 @@ const UploadImageDZ = ({ masterData, params }) => {
 
         {/* upload btn */}
         <div className="text-center mt-4">
-          <MDBBtn
+          <Button
             type="submit"
             color={isSubmitting ? 'dark' : 'success'}
             disabled={rejectedImagesState.length > 0 || isSubmitting ? true : false}
           >
             {isSubmitting ? CW.button.submit.isUploading : CW.button.submit.uploadImages}
-          </MDBBtn>
+          </Button>
         </div>
 
         {/* selected files card */}

@@ -12,6 +12,7 @@ import {
   NavLink,
   TabContent,
   TabPane,
+  Button
 } from 'reactstrap'
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
@@ -72,20 +73,20 @@ const CompanyDetail = ({ match, ...rest }) => {
                     <Link to={`/${rootMenuPath}/list`}>
                       <i className="mdi mdi-keyboard-backspace"></i> Back to list
                     </Link>
-                    <Link to={`/${rootMenuPath}/edit/${dataCompany.result.companyID}`}>
-                      <MDBBtn type="button" color="success">
+                    <Link to={`/${rootMenuPath}/edit/${dataCompany?.result.companyID}`}>
+                      <Button type="button" color="success" >
                         Update Data
-                      </MDBBtn>
+                      </Button>
                     </Link>
                   </div>
 
                   <CardTitle className="mt-4 h4 d-flex flex-column">
                     <span>
-                      Company ID: <span className="fw-normal">{dataCompany.result.companyID}</span>
+                      Company ID: <span className="fw-normal">{dataCompany?.result.companyID}</span>
                     </span>
                     <span>
                       Company Name:{' '}
-                      <span className="fw-normal">{dataCompany.result.companyName}</span>
+                      <span className="fw-normal">{dataCompany?.result.companyName}</span>
                     </span>
                   </CardTitle>
                   <CardTitle className="mt-4 h4">Company Information & Media</CardTitle>
@@ -127,7 +128,7 @@ const CompanyDetail = ({ match, ...rest }) => {
                       <Row>
                         <Col sm="12">
                           <CmpDetailInfo
-                            masterData={dataCompany.result}
+                            masterData={dataCompany?.result}
                             params={{ companyID: match.params.companyID }}
                           />
                         </Col>
@@ -139,7 +140,7 @@ const CompanyDetail = ({ match, ...rest }) => {
                         <Col sm="12">
                           <CardBody>
                             <CmpDetailPhoto
-                              masterData={dataCompany.result}
+                              masterData={dataCompany?.result}
                               params={{ companyID: match.params.companyID }}
                             />
                           </CardBody>
@@ -152,7 +153,7 @@ const CompanyDetail = ({ match, ...rest }) => {
                         <Col sm="12">
                           <CardBody>
                             <CmpDetailVideo
-                              masterData={dataCompany.result}
+                              masterData={dataCompany?.result}
                               params={{ companyID: match.params.companyID }}
                             />
                           </CardBody>
