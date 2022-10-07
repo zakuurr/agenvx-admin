@@ -44,8 +44,8 @@ const Login = props => {
                       Welcome Back !
                     </h5>
                     <p className="text-white-50">
-                      Login to admin dashboard<br />
-                      Astra Green Energy Virtual Exhibition 2021.
+                      Login to admin dashboard<br/>
+                      Astra Green Energy Virtual Exhibition 2022.
                     </p>
                     <Link to="/" className="logo logo-admin">
                       <img src={logoDefault} height="24" alt="logo" />
