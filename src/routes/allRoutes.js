@@ -14,6 +14,11 @@ import UserList from "cmsagenvx/users/UserList"
 import LeaderboardDetail from "cmsagenvx/leaderboard/LeaderboardDetail"
 import MediaList from "cmsagenvx/media/MediaList"
 
+import BookAssetList from "cmsagenvx/bookasset/BookAssetList"
+import BookAssetEdit from "cmsagenvx/bookasset/BookAssetEdit"
+
+import VideoAssetList from "cmsagenvx/videoasset/VideoAssetList"
+
 import BookEdit from "cmsagenvx/media/edit/BookEdit"
 import VideoEdit from "cmsagenvx/media/edit/VideoEdit"
 import CompanyDetail from "cmsagenvx/companies/CompanyDetail"
@@ -46,6 +51,16 @@ const userRoutes = [
   { path: "/media/list", component: MediaList },
   { path: `/media/edit/${mediaAssets.bookAssetID}`, component: BookEdit },
   { path: `/media/edit/${mediaAssets.videoAssetID}`, component: VideoEdit },
+
+
+  { path : '/video', component: () => <Redirect to="/video/list"/>},
+  { path: "/video/list", component: VideoAssetList },
+  // { path: `/book/edit/:assetID`, component: BookAssetEdit },
+
+  { path : '/book', component: () => <Redirect to="/book/list"/>},
+  { path: "/book/list", component: BookAssetList },
+  { path: `/book/edit/:assetID`, component: BookAssetEdit },
+
 
   // this route should be at the end of all other routes
   { path: "/*", component: () => <Redirect to="/users/list" /> },

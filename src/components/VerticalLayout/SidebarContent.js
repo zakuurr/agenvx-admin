@@ -129,6 +129,18 @@ const SidebarContent = props => {
                 <span>{props.t('Media')}</span>
               </Link>
             </li>
+            <li>
+              <Link to="/video/list" className="waves-effect">
+                <i className="ti-camera"></i>
+                <span>{props.t('Video Asset')}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/book/list" className="waves-effect">
+                <i className="ti-book"></i>
+                <span>{props.t('Book Asset')}</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </SimpleBar>
