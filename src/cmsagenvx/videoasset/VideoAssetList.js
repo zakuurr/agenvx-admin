@@ -115,6 +115,10 @@ const VideoAssetList = () => {
                   <CardTitle className="h4">List of Video Asset</CardTitle>
                   <CardSubtitle className="card-title-desc">
                     View detail and update video data.
+                    <Link to="/video/add" className="button btn btn-primary mt-2" style={{
+          
+          float: "right",
+        }}>Add</Link>
                   </CardSubtitle>
 
                   <MDBDataTable responsive bordered hover data={{ columns, rows }} />

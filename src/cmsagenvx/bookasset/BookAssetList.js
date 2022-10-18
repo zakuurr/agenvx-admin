@@ -10,6 +10,7 @@ import {
   import { Row, Col, Card, CardBody, CardTitle, Container, CardSubtitle } from 'reactstrap'
   
   //Import Breadcrumb
+  import axios from "axios"
   import '../datatables.scss'
   import { Link } from 'react-router-dom'
   import { useEffect, useState } from 'react'
@@ -17,7 +18,8 @@ import {
   import LoadingText from 'components/cmsagenvx/LoadingText'
   import ErrorText from 'components/cmsagenvx/ErrorText'
   import { capsEveryWord } from 'helpers/formatText'
-  
+
+
   const columns = [
     {
       label: 'Asset Name',
@@ -50,11 +52,11 @@ import {
       width: 100,
     },
     {
-        label: 'Year',
-        field: 'year',
-        sort: 'asc',
-        width: 100,
-      },
+      label: 'Year',
+      field: 'year',
+      sort: 'asc',
+      width: 100,
+    },
     {
       label: 'Action',
       field: 'action',
@@ -67,7 +69,8 @@ import {
     const [dataBook, setDataBookList] = useState([{}])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
-  
+
+
     useEffect(() => {
       fetchData(`/asset/list/book`)
         .then(res => {
@@ -82,6 +85,7 @@ import {
         })
     }, [])
   
+    
     if (loading) return <LoadingText></LoadingText>
     if (error) return <ErrorText></ErrorText>
   
@@ -93,6 +97,9 @@ import {
           Option
         </MDBDropdownToggle>
         <MDBDropdownMenu>
+        <a href={dataAPI.source}>
+          <MDBDropdownItem link>Open</MDBDropdownItem>
+        </a>
           <Link to={`/book/edit/${dataAPI.assetID}`}>
             <MDBDropdownItem link>Edit</MDBDropdownItem>
           </Link>
@@ -107,23 +114,32 @@ import {
     return (
       <>
         <div className="page-content">
+          
           <Container fluid={true}>
             <Row>
               <Col className="col-12">
                 <Card>
+                  
                   <CardBody>
                     <CardTitle className="h4">List of Book Asset</CardTitle>
                     <CardSubtitle className="card-title-desc">
                       View detail and update book data.
+                      <Link to="/book/add" className="button btn btn-primary mt-2" style={{
+          
+          float: "right",
+        }}>Add</Link>
+                      
                     </CardSubtitle>
   
                     <MDBDataTable responsive bordered hover data={{ columns, rows }} />
+                    
                   </CardBody>
                 </Card>
               </Col>
             </Row>
           </Container>
         </div>
+
       </>
     )
   }

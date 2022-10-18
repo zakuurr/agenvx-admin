@@ -16,12 +16,15 @@ import MediaList from "cmsagenvx/media/MediaList"
 
 import BookAssetList from "cmsagenvx/bookasset/BookAssetList"
 import BookAssetEdit from "cmsagenvx/bookasset/BookAssetEdit"
+import BookAssetAdd from "cmsagenvx/bookasset/BookAssetAdd" 
 
 import VideoAssetList from "cmsagenvx/videoasset/VideoAssetList"
+import VideoAssetAdd from "cmsagenvx/videoasset/VideoAssetAdd"
 
 import BookEdit from "cmsagenvx/media/edit/BookEdit"
 import VideoEdit from "cmsagenvx/media/edit/VideoEdit"
 import CompanyDetail from "cmsagenvx/companies/CompanyDetail"
+
 
 // manual mapping media assets ID
 export const mediaAssets = {
@@ -47,18 +50,21 @@ const userRoutes = [
   { path: "/companies/detail/:companyID", component: CompanyDetail },
   { path: "/companies/edit/:companyID", component: CompanyEdit },
 
-  { path: "/media", component: () => <Redirect to="/media/list" /> },
-  { path: "/media/list", component: MediaList },
-  { path: `/media/edit/${mediaAssets.bookAssetID}`, component: BookEdit },
-  { path: `/media/edit/${mediaAssets.videoAssetID}`, component: VideoEdit },
+  // { path: "/media", component: () => <Redirect to="/media/list" /> },
+  // { path: "/media/list", component: MediaList },
+  // { path: `/media/edit/:assetID`, component: BookEdit },
+  // { path: `/media/edit/:assetID`, component: VideoEdit },
 
 
   { path : '/video', component: () => <Redirect to="/video/list"/>},
   { path: "/video/list", component: VideoAssetList },
+  { path: "/video/add", component: VideoAssetAdd },
+  { path: `/video/edit/:assetID`, component: BookAssetEdit },
   // { path: `/book/edit/:assetID`, component: BookAssetEdit },
 
   { path : '/book', component: () => <Redirect to="/book/list"/>},
   { path: "/book/list", component: BookAssetList },
+  { path: "/book/add", component: BookAssetAdd },
   { path: `/book/edit/:assetID`, component: BookAssetEdit },
 
 

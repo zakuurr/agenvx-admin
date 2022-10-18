@@ -123,12 +123,12 @@ const SidebarContent = props => {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link to="/media/list" className="waves-effect">
                 <i className="ti-gallery"></i>
                 <span>{props.t('Media')}</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/video/list" className="waves-effect">
                 <i className="ti-camera"></i>

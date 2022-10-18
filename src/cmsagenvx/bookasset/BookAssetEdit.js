@@ -1,287 +1,199 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useEffect, useState } from 'react'
 import {
-  Row,
+  MDBDataTable,
+  MDBBtnGroup,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+} from 'mdbreact'
+
+import { Card,
   Col,
-  Card,
+  Container,
+  Row,
   CardBody,
   CardTitle,
-  CardSubtitle,
-  Container,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Button
-} from 'reactstrap'
-
+  Label,
+  Button,
+  Form,
+  Input,
+  InputGroup, } from 'reactstrap'
+  import * as API from "apiClient"
+  import { useHistory, useParams } from "react-router-dom";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+// import he from 'he'
+// import { convertToHTML } from 'draft-convert'
 
 import { Link } from 'react-router-dom'
 
 import classnames from 'classnames'
-
-import CmpUpdateInfo from 'components/cmsagenvx/CmpUpdateInfo'
-import UploadVideoDZ from 'components/cmsagenvx/UploadVideoDZ'
-import UploadImageDZ from 'components/cmsagenvx/UploadImageDZ'
-
-import { MDBBtn } from 'mdbreact'
-import { Redirect } from 'react-router-dom'
-import LoadingText from 'components/cmsagenvx/LoadingText'
-import ErrorText from 'components/cmsagenvx/ErrorText'
-import fetchData from 'helpers/fetchData'
-import ReactS3Client from 'helpers/ReactS3Client'
-import { PHOTO_MAX_QTY, VIDEO_MAX_QTY } from 'const'
-
-import md5 from 'crypto-js/md5'
-import SimpleToast from 'components/cmsagenvx/alert/SimpleToast'
-import CW from 'copywriting'
+import UploadBookDZ from 'components/cmsagenvx/UploadBookDZ'
+import { mediaAssets } from 'routes/allRoutes'
 
 const BookAssetEdit = ({ match, ...rest }) => {
   const rootMenuPath = rest.location.pathname.split('/')[1]
   const [activeTab, setActiveTab] = useState('1')
+  const [loginData, setLoginData] = useState({
+    assetName: "",
+    source: "",
+    type: "",
+    Description: "",
+    image: ""
+});
+const [routeTemp, setRouteTemp] = useState("");
+const [showLoginErrorMessage, setShowLoginErrorMessage] = useState(false);
+const [loginErrorMessage, setLoginErrorMessage] = useState("");
 
-  const [dataCompany, setDataCompany] = useState([{}])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
 
-  useEffect(() => {
-    fetchData(`/book/${match.params.assetID}`)
-      .then(res => {
-        console.log(res)
-        setDataCompany(res)
-        setError(false)
-      })
-      .catch(err => {
-        setError(true)
-        console.log(err)
-      })
-      .finally(_ => {
-        setLoading(false)
-      })
-  }, [])
 
-  if (loading) return <LoadingText></LoadingText>
-  if (error) return <ErrorText></ErrorText>
 
-  if (dataCompany.result.companyID === '00000000-0000-0000-0000-000000000000') {
-    return <Redirect to="/book/list" />
-  }
+const onLogin = () => {
 
-  /**
-   *
-   * @param {*} e
-   * @param {'images' | 'video'} type
-   * @returns
-   */
-  const handleOnClickDelete = async (e, type) => {
-    e.preventDefault()
-
-    let dataObj
-
-    try {
-      if (type === 'images') {
-        // deleting files from bucket is still error, regarding the https url that currently in using
-        // perhaps if the url is fully https we can do this later.
-        // but for now, we only updating data on db so it will have an empty array
-        //
-        // let res = []
-        // for (let i = 0; i < PHOTO_MAX_QTY; i++) {
-        //   const imgName = `${md5(match.params.companyID).toString()}.img.${++i}`
-        //   const response = await ReactS3Client.deleteFile(imgName)
-
-        //   console.log(response)
-        //   res.push(response)
-        // }
-
-        // send data to server to write into db
-        dataObj = {
-          companyID: match.params.companyID,
-          images: [],
-        }
-      } else if (type === 'video') {
-        // deleting files from bucket is still error, regarding the https url that currently in using
-        // perhaps if the url is fully https we can do this later.
-        // but for now, we only updating data on db so it will have an empty string
-        //
-        // const vidName = `${md5(match.params.companyID).toString()}.vid`
-        // const response = await ReactS3Client.deleteFile(vidName)
-
-        // send data to server to write into db
-        dataObj = {
-          companyID: match.params.companyID,
-          video: ' ',
-        }
-      } else {
-        throw 'file type schema error...'
-      }
-
-      const fileUpdRes = await fetch(process.env.REACT_APP_BASEURL + '/company/update', {
-        method: 'PUT',
-        body: JSON.stringify(dataObj),
-      }).then(x => x.json())
-
-      if (fileUpdRes.code >= 200 && fileUpdRes.code < 300 && !fileUpdRes.error) {
-        SimpleToast.success(CW.toast.success.deleteFile)
-      } else {
-        throw 'Error. check the response status code...'
-      }
-    } catch (e) {
-      console.warn(e)
-      SimpleToast.error(CW.toast.error.deleteFile)
+    var data = {
+        assetName: loginData.assetName,
+        source: loginData.source,
+        type: loginData.type,
+        Description: loginData.type,
+        image: loginData.image
     }
+  
+    API.apiClient.post(API.ADD_ASSET, data).then((res) => {
+        if (res.data.code === 200) {
+            localStorage.setItem("loginObject", JSON.stringify(res.data.result))
+            window.location.href = routeTemp
+        } else {
+            setShowLoginErrorMessage(true);
+            setLoginErrorMessage(res.data.message)
+        }
+    }).catch((err) => {
+        setShowLoginErrorMessage(true);
+        setLoginErrorMessage("Username Not Found")
+    });
+}
 
-    console.log('Process finish')
-  }
+const constructor = () => { };
+constructor();
 
-  // console.log(dataCompany)
+const handleChange = (e) => {
+    setShowLoginErrorMessage(false);
+    let newLoginData = { ...loginData };
+    newLoginData[e.target.name] = e.target.value;
+    setLoginData(newLoginData);
+    // console.log("handleChange", newLoginData)
+};
+
+useEffect(() => {
+    
+            setRouteTemp("/book");
+       
+
+});
   return (
     <>
       <div className="page-content">
-        <Container fluid={true}>
-          <Row>
-            <Col>
-              <Card>
-                <CardBody className="m-3">
-                  <div className="justify-content-between d-flex">
-                    <Link to={`/${rootMenuPath}/list`}>
-                      <i className="mdi mdi-keyboard-backspace"></i> Back to list
-                    </Link>
-                    <Link to={`/${rootMenuPath}/detail/${dataCompany.result.companyID}`}>
-                      <Button type="button" color="danger">
-                        View detail & Discard changes
-                      </Button>
-                    </Link>
-                  </div>
+      <Container fluid={true}>
+         
+         <Row>
+           <Col lg={12}>
+             <Card>
+             <CardBody>
+                   <CardTitle className="h4">Edit Book Asset</CardTitle>
+           
+                   <div className="mb-3">
+                     <Label htmlFor="formrow-firstname-Input">assetName</Label>
+                     <Input
+                       type="text"
+                       className="form-control"
+                       id="formrow-firstname-Input"
+                       name="assetName"
+                     
+                       onChange={handleChange}
+                     />
+                   </div>
 
-                  <CardTitle className="mt-4 h4">Update Company Information & Media</CardTitle>
-                  <CardSubtitle className="mb-4">
-                    Keep the company's general info up-to-date
-                  </CardSubtitle>
+                   <Row>
+                     <Col md={12}>
+                       <div className="mb-3">
+                         <Label htmlFor="formrow-email-Input">source</Label>
+                         <Input
+                           type="text"
+                           className="form-control"
+                           id="formrow-email-Input"
+                           name="source"
+                         
+                           onChange={handleChange}
+                         />
+                       </div>
+                     </Col>
+                     <Col md={6}>
+                       <div className="mb-3">
+                         <Label htmlFor="formrow-password-Input">type</Label>
+                         <Input
+                           type="text"
+                           name='type'
+                           className="form-control"
+                           id="formrow-password-Input"
+                        
+                            onChange={handleChange}
+                         />
+                       </div>
+                     </Col>
+                   </Row>
 
-                  <Nav tabs className="nav-tabs-custom">
-                    <NavItem>
-                      <NavLink
-                        className={classnames({ active: activeTab === '1' })}
-                        onClick={() => setActiveTab('1')}
-                      >
-                        <span className="d-none d-sm-block">General Info</span>
-                      </NavLink>
-                    </NavItem>
+                   <Row>
+                     <Col lg={4}>
+                       <div className="mb-3">
+                         <Label htmlFor="formrow-InputCity">Description</Label>
+                         <Input
+                           type="text"
+                           className="form-control"
+                           id="formrow-InputCity"
+                           name="Description"
+                         
+                            onChange={handleChange}
+                         />
+                       </div>
+                     </Col>
+                   
+                     <Col lg={4}>
+                       <div className="mb-3">
+                         <Label htmlFor="formrow-InputCity">image</Label>
+                         <Input
+                           type="text"
+                           className="form-control"
+                           id="formrow-InputCity"
+                           name="image"
+                           
+                            onChange={handleChange}
+                         />
+                       </div>
+                     </Col>
+                   
+                   </Row>
 
-                    <NavItem>
-                      <NavLink
-                        className={classnames({ active: activeTab === '2' })}
-                        onClick={() => setActiveTab('2')}
-                      >
-                        <span className="d-none d-sm-block">Photos</span>
-                      </NavLink>
-                    </NavItem>
+                   
+                   <div>
+                   <button type="submit" className="btn btn-primary pl-3 pr-3" onClick={onLogin} >Login
+                   </button>
+                   </div>
 
-                    <NavItem>
-                      <NavLink
-                        className={classnames({ active: activeTab === '3' })}
-                        onClick={() => setActiveTab('3')}
-                      >
-                        <span className="d-none d-sm-block">Video</span>
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
 
-                  <TabContent activeTab={activeTab} className="p-3 text-muted">
-                    <TabPane tabId="1">
-                      <Row>
-                        <Col sm="12">
-                          <CmpUpdateInfo
-                            masterData={dataCompany.result}
-                            params={{ companyID: match.params.companyID }}
-                          />
-                        </Col>
-                      </Row>
-                    </TabPane>
+                   {
+                       showLoginErrorMessage &&
+                       <div className="alert alert-danger mt-4" role="alert">
+                           {loginErrorMessage}
+                       </div>
+                   }
+                
+               </CardBody>
+             </Card>
+           </Col>
 
-                    <TabPane tabId="2">
-                      <Row>
-                        <Col sm="12">
-                          <CardBody>
-                            <div className="justify-content-between d-flex">
-                              <Col>
-                                <CardTitle className="h4">Upload Photos</CardTitle>
-                                <CardSubtitle className="mb-3">Maks. 12pcs & 10MB/pcs</CardSubtitle>
-                                <CardSubtitle className="mb-3">
-                                  All previous uploaded photos for this company will be replaced,
-                                  please upload every photos included the one that is not changing
-                                </CardSubtitle>
-                              </Col>
-
-                              {/* TODO: add conditional */}
-                              <div>
-                                <Button
-                                  type="button"
-                                  className="btn-outline-danger"
-                                  size="sm"
-                                  onClick={e => handleOnClickDelete(e, 'images')}
-                                >
-                                  Delete all photos
-                                </Button>
-                              </div>
-                            </div>
-
-                            <div className="mb-5">
-                              <UploadImageDZ
-                                masterData={dataCompany.result}
-                                params={{ companyID: match.params.companyID }}
-                              />
-                            </div>
-                          </CardBody>
-                        </Col>
-                      </Row>
-                    </TabPane>
-
-                    <TabPane tabId="3">
-                      <Row>
-                        <Col sm="12">
-                          <CardBody>
-                            <div className="justify-content-between d-flex">
-                              <Col>
-                                <CardTitle className="h4">Upload Video</CardTitle>
-                                <CardSubtitle className="mb-3">
-                                  Maks. 200MB & only 1 video
-                                </CardSubtitle>
-                                <CardSubtitle className="mb-3">
-                                  Previous uploaded video for this company will be replaced
-                                </CardSubtitle>
-                              </Col>
-
-                              {/* TODO: add conditional */}
-                              <div>
-                                <Button
-                                  type="button"
-                                  className="btn-outline-danger"
-                                  size="sm"
-                                  onClick={e => handleOnClickDelete(e, 'video')}
-                                >
-                                  Delete all video
-                                </Button>
-                              </div>
-                            </div>
-
-                            <div className="mb-5">
-                              <UploadVideoDZ
-                                masterData={dataCompany.result}
-                                params={{ companyID: match.params.companyID }}
-                              />
-                            </div>
-                          </CardBody>
-                        </Col>
-                      </Row>
-                    </TabPane>
-                  </TabContent>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+           
+         </Row>
+       </Container>
       </div>
     </>
   )
