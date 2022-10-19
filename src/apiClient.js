@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_ROOT = "http://localhost/agenvx/";
+const API_ROOT = "http://localhost:9100/agenvx/";
 const GET_COMPANY_ID = API_ROOT + "company/"
 const LOGIN = "users/login"
 const REGISTER = "users/register"
